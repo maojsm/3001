@@ -66,4 +66,11 @@ public static class AccountContextExtension
 
         #endregion
     }
+
+    public static void ConfigureDevEnvironment(this WebApplication app)
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+        app.MapSwagger();//.RequireAuthorization();
+    }
 }

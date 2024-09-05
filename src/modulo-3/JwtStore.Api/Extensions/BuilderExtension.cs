@@ -29,7 +29,16 @@ public static class BuilderExtension
         Configuration.Email.DefaultFromEmail =
             builder.Configuration.GetSection("Email").GetValue<string>("DefaultFromEmail") ?? string.Empty;
     }
-    
+
+    public static void AddDocumentation(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(x =>
+        {
+            x.CustomSchemaIds(n => n.FullName);
+        });
+    }
+
     public static void AddDatabase(this WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<AppDbContext>(x =>

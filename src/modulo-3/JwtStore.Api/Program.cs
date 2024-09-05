@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.AddConfiguration();
 builder.AddDatabase();
 builder.AddJwtAuthentication();
+builder.AddDocumentation();
 
 builder.AddAccountContext();
 
@@ -17,5 +18,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapAccountEndpoints();
+
+app.ConfigureDevEnvironment();
 
 app.Run();

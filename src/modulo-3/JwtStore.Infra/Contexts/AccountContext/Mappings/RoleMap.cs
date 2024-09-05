@@ -12,7 +12,7 @@ public class RoleMap : IEntityTypeConfiguration<Role>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Name)
             .HasColumnName("Name")
-            .HasColumnType("NVARCHAR")
+            .HasColumnType("VARCHAR(120)")
             .HasMaxLength(120)
             .IsRequired(true);
     }

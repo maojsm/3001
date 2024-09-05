@@ -3,8 +3,8 @@ using System;
 using JwtStore.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -17,21 +17,21 @@ namespace JwtStore.Api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.8")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("JwtStore.Core.Contexts.AccountContext.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(120)
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("VARCHAR(120)")
                         .HasColumnName("Name");
 
                     b.HasKey("Id");
@@ -43,18 +43,18 @@ namespace JwtStore.Api.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("VARCHAR")
+                        .HasColumnType("VARCHAR(120)")
                         .HasColumnName("Image");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(120)
-                        .HasColumnType("NVARCHAR")
+                        .HasColumnType("VARCHAR(120)")
                         .HasColumnName("Name");
 
                     b.HasKey("Id");
@@ -65,10 +65,10 @@ namespace JwtStore.Api.Migrations
             modelBuilder.Entity("UserRole", b =>
                 {
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasKey("RoleId", "UserId");
 
@@ -82,11 +82,11 @@ namespace JwtStore.Api.Migrations
                     b.OwnsOne("JwtStore.Core.Contexts.AccountContext.ValueObjects.Email", "Email", b1 =>
                         {
                             b1.Property<Guid>("UserId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("uuid");
 
                             b1.Property<string>("Address")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)")
+                                .HasColumnType("text")
                                 .HasColumnName("Email");
 
                             b1.HasKey("UserId");
@@ -99,19 +99,19 @@ namespace JwtStore.Api.Migrations
                             b1.OwnsOne("JwtStore.Core.Contexts.AccountContext.ValueObjects.Verification", "Verification", b2 =>
                                 {
                                     b2.Property<Guid>("EmailUserId")
-                                        .HasColumnType("uniqueidentifier");
+                                        .HasColumnType("uuid");
 
                                     b2.Property<string>("Code")
                                         .IsRequired()
-                                        .HasColumnType("nvarchar(max)")
+                                        .HasColumnType("text")
                                         .HasColumnName("EmailVerificationCode");
 
                                     b2.Property<DateTime?>("ExpiresAt")
-                                        .HasColumnType("datetime2")
+                                        .HasColumnType("timestamp with time zone")
                                         .HasColumnName("EmailVerificationExpiresAt");
 
                                     b2.Property<DateTime?>("VerifiedAt")
-                                        .HasColumnType("datetime2")
+                                        .HasColumnType("timestamp with time zone")
                                         .HasColumnName("EmailVerificationVerifiedAt");
 
                                     b2.HasKey("EmailUserId");
@@ -129,16 +129,16 @@ namespace JwtStore.Api.Migrations
                     b.OwnsOne("JwtStore.Core.Contexts.AccountContext.ValueObjects.Password", "Password", b1 =>
                         {
                             b1.Property<Guid>("UserId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("uuid");
 
                             b1.Property<string>("Hash")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)")
+                                .HasColumnType("text")
                                 .HasColumnName("PasswordHash");
 
                             b1.Property<string>("ResetCode")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)")
+                                .HasColumnType("text")
                                 .HasColumnName("PasswordResetCode");
 
                             b1.HasKey("UserId");

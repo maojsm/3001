@@ -33,7 +33,7 @@ public static class BuilderExtension
     public static void AddDatabase(this WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<AppDbContext>(x =>
-            x.UseSqlServer(
+            x.UseNpgsql(
                 Configuration.Database.ConnectionString,
                 b => b.MigrationsAssembly("JwtStore.Api")));
     }

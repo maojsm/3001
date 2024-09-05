@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace JwtStore.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class v2 : Migration
+    public partial class CreateDatabase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,8 +15,8 @@ namespace JwtStore.Api.Migrations
                 name: "Role",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "NVARCHAR(120)", maxLength: 120, nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "VARCHAR(120)", maxLength: 120, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -24,11 +24,30 @@ namespace JwtStore.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "VARCHAR(120)", maxLength: 120, nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    EmailVerificationCode = table.Column<string>(type: "text", nullable: false),
+                    EmailVerificationExpiresAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    EmailVerificationVerifiedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    PasswordResetCode = table.Column<string>(type: "text", nullable: false),
+                    Image = table.Column<string>(type: "VARCHAR(120)", maxLength: 255, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserRole",
                 columns: table => new
                 {
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -61,6 +80,9 @@ namespace JwtStore.Api.Migrations
 
             migrationBuilder.DropTable(
                 name: "Role");
+
+            migrationBuilder.DropTable(
+                name: "User");
         }
     }
 }

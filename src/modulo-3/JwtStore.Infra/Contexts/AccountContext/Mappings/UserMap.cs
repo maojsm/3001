@@ -14,13 +14,13 @@ public class UserMap : IEntityTypeConfiguration<User>
 
         builder.Property(x => x.Name)
             .HasColumnName("Name")
-            .HasColumnType("NVARCHAR")
+            .HasColumnType("VARCHAR(120)")
             .HasMaxLength(120)
             .IsRequired(true);
 
         builder.Property(x => x.Image)
             .HasColumnName("Image")
-            .HasColumnType("VARCHAR")
+            .HasColumnType("VARCHAR(120)")
             .HasMaxLength(255)
             .IsRequired(true);
 
